@@ -56,9 +56,9 @@ By making notes ahead of time, you will practice the core skill of being able to
 | -------------------------- | ------ | ---------------------------------- | --------------------------------------- |
 | /api/questions                 | GET    | -                                  | Returns list of questions               |
 | /api/categories                | GET    | -                                  | Returns list of categories              |
-| /api/question/<id>            | DEL    | question_id                        | Deletes a question                      |
+| /api/question/`<id>`          | DEL    | question_id                        | Deletes a question                      |
 | /questions                 | POST   | -                                  | Creates a new question                  |
-| /api/category/<id>/questions | GET    | category_id                        | List of questions from specified category |
+| /api/category/`<id>`/questions | GET    | category_id                        | List of questions from specified category |
 | /api/quizzes                   | POST   | previous_questions , quiz_category | Display random question based on the choosen category. |
 
 
