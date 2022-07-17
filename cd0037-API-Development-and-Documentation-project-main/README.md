@@ -54,12 +54,12 @@ By making notes ahead of time, you will practice the core skill of being able to
 
 | Endpoint                   | Method | Parameters                         | Behavior                                |
 | -------------------------- | ------ | ---------------------------------- | --------------------------------------- |
-| /questions                 | GET    | -                                  | Returns list of questions               |
-| /categories                | GET    | -                                  | Returns list of categories              |
-| /questions/<id>            | DEL    | question_id                        | Deletes a question                      |
+| /api/questions                 | GET    | -                                  | Returns list of questions               |
+| /api/categories                | GET    | -                                  | Returns list of categories              |
+| /api/question/<id>            | DEL    | question_id                        | Deletes a question                      |
 | /questions                 | POST   | -                                  | Creates a new question                  |
-| /categories/<id>/questions | GET    | category_id                        | List of questions from certain category |
-| /quizzes                   | POST   | previous_questions , quiz_category | Gives the question to the user to play. |
+| /api/category/<id>/questions | GET    | category_id                        | List of questions from specified category |
+| /api/quizzes                   | POST   | previous_questions , quiz_category | Display random question based on the choosen category. |
 
 
 
