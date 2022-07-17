@@ -78,24 +78,16 @@ def create_app(test_config=None):
     @app.route('/api/questions')
     def questions():
             # Implement pagination
-        # data = []
-
-        # page = request.args.get('page', 1, type=int)
-        # start = (page - 1) * QUESTIONS_PER_PAGE
-        # end = start + QUESTIONS_PER_PAGE 
         questions = Question.query.all() 
         current_questions = paginate_questions(request, questions)
-            
-        # formatted_questions = [que.format() for que in questions]
         categories =  Category.query.all()
         categories_dict = {}
         for category in categories:
             categories_dict[category.id] = category.type
+        if not current_questions:
+            abort (404)
         
-        # formatted_categories = [cat.type.format() for cat in categories]
-        # print (categories)
-        # print (formatted_questions[0])
-        # print(formatted_categories)
+       
         return jsonify({
         'success': True,
         'questions':current_questions,
@@ -177,7 +169,8 @@ def create_app(test_config=None):
 
         if search_term:
             search_results = Question.query.filter(
-                Question.question.ilike(f'%{search_term}%')).all()
+                Question.question.ilike(f'%{search_term}%')
+                ).all()
 
             return jsonify({
                 'success': True,
