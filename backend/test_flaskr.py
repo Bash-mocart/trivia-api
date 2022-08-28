@@ -89,7 +89,6 @@ class TriviaTestCase(unittest.TestCase):
         response = self.client().get('/api/categories/9999')
         self.assertEqual(response.status_code, 404)
 
-
     def test_questions_per_category(self):
         response = self.client().get('/api/category/1/questions')
         self.assertEqual(response.status_code, 200)
@@ -97,6 +96,23 @@ class TriviaTestCase(unittest.TestCase):
     def test_failed_questions_per_category(self):
         response = self.client().get('/api/category/a/questions')
         self.assertEqual(response.status_code, 404)
+    
+    def test_play_quiz_with_category(self):
+        data ={'previous_questions': [29], 'quiz_category': {'type': 'Science', 'id': '1'}}
+        response = self.client().post('/api/quizzes', json = data)
+        self.assertEqual(response.status_code, 200)
+
+    def test_play_quiz_with_no_category(self):
+        data ={'previous_questions': [29]}
+        response = self.client().post('/api/quizzes', json = data)
+        self.assertEqual(response.status_code, 422)
+    
+    def test_play_quiz_with_all_category(self):
+        data ={'previous_questions': [], 'quiz_category': {'type': 'click', 'id': 0}}
+        response = self.client().post('/api/quizzes', json = data)
+        self.assertEqual(response.status_code, 200)
+
+
 
 
 

@@ -230,28 +230,31 @@ def create_app(test_config=None):
     def play_quiz():
 
         body = request.get_json()
-        category = body['quiz_category']
-        prev = body['previous_questions']
-        type = category["type"]
-        id = category["id"]
-        not_prev = Question.id.notin_((prev))
-        if type == 'click':
-            questions = Question.query.filter(not_prev).all()
-        else:
-            questions = Question.query.filter_by(category=id).filter(not_prev).all()
-        question = get_random(questions)
-        if questions is None:
+        print (body)
+        try:
+            category = body['quiz_category']
+            prev = body['previous_questions']
+            type = category["type"]
+            id = category["id"]
+            not_prev = Question.id.notin_((prev))
+            if type == 'click':
+                questions = Question.query.filter(not_prev).all()
+                question = get_random(questions)
+            else:
+                questions = Question.query.filter_by(category=id).filter(not_prev).all()
+                question = get_random(questions)
+            
+            if len(prev) > len(questions):
+                return jsonify({
+                    'success': True,
+            }) 
+
             return jsonify({
                 'success': True,
-           }) 
-
-        if not category:
-            abort(404)
-
-        return jsonify({
-            'success': True,
-            'question': question
-        })
+                'question': question
+            })
+        except:
+            abort(422)
 
 
             
