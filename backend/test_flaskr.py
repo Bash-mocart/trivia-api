@@ -1,6 +1,7 @@
 import os
 import unittest
 import json
+from urllib import response
 from flask_sqlalchemy import SQLAlchemy
 
 from flaskr import create_app
@@ -67,6 +68,15 @@ class TriviaTestCase(unittest.TestCase):
         }
         response = self.client().post('/api/questions', json=new_question)
         self.assertEqual(response.status_code, 422)
+    
+    def test_delete_question(self):
+        response = self.client().delete('/api/question/3')
+        self.assertEqual(response.status_code, 200)
+    
+    def test_delete_invalid_question(self):
+        response = self.client().delete('/api/question/1000000000')
+        self.assertEqual(response.status_code, 422)
+
 
     def test_search_questions(self):
         new_search = {'searchTerm': 'a'}
