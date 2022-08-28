@@ -42,125 +42,61 @@ class TriviaTestCase(unittest.TestCase):
 
     
     def test_get_questions(self):
-        res = self.client().get('/api/questions')
-        data = json.loads(res.data)
-        # testing
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(data['success'], True)
-        self.assertTrue(data['total_questions'])
-        self.assertTrue(len(data['questions']))
-        self.assertTrue(len(data['categories']))
+        response = self.client().get('/api/questions')
+        self.assertEqual(response.status_code, 200)
 
-    def test_failed_invalid_question_page(self):
-        res = self.client().get('/api/questions?page=10000')
-        data = json.loads(res.data)
+    def test_invalid_question_page(self):
+        response = self.client().get('/api/questions?page=10000')
+        self.assertEqual(response.status_code, 404)
 
-        self.assertEqual(res.status_code, 404)
-        self.assertEqual(data['success'], False)
-        self.assertEqual(data['message'], 'resource not found')
-    
-    def test_delete_question(self):
-        question = Question(question='new question', answer='new answer',difficulty=1, category=1)
-        question.insert()
-        question_id = question.id
-        res = self.client().delete(f'/api/question/{question_id}')
-        data = json.loads(res.data)
-        question = Question.query.filter(Question.id == question.id).one_or_none()
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(data['success'], True)
-        self.assertEqual(data['deleted'], str(question_id))
-        self.assertEqual(question, None)
-
-    def test_failed_deleting_invalid_question(self):
-        res = self.client().delete('/api/question/a')
-        data = json.loads(res.data)
-        self.assertEqual(res.status_code, 422)
-        self.assertEqual(data['success'], False)
-        self.assertEqual(data['message'], 'unprocessable')
 
     def test_add_question(self):
         new_question = {
-            'question': 'Tell me about yourself?',
-            'answer': 'I be seniorman',
-            'difficulty': 3,
+            'question': 'Wetin you wan be for life?',
+            'answer': 'I wan be seniorman',
+            'difficulty': 1,
             'category': 1
         }
-        total_questions_before = len(Question.query.all())
-        res = self.client().post('/api/questions', json=new_question)
-        data = json.loads(res.data)
-        total_questions_after = len(Question.query.all())
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(data["success"], True)
-        self.assertEqual(total_questions_after, total_questions_before + 1)
+        response = self.client().post('/api/questions', json=new_question)
+        self.assertEqual(response.status_code, 200)
 
     def test_failed_invalid_question(self):
         new_question = {
             'question': 'new_question',
             'answer': 'new_answer',
-            'category': 1
         }
-        res = self.client().post('/api/questions', json=new_question)
-        data = json.loads(res.data)
-        #testing
-        self.assertEqual(res.status_code, 422)
-        self.assertEqual(data["success"], False)
-        self.assertEqual(data["message"], "unprocessable")
+        response = self.client().post('/api/questions', json=new_question)
+        self.assertEqual(response.status_code, 422)
 
     def test_search_questions(self):
         new_search = {'searchTerm': 'a'}
-        res = self.client().post('/api/questions/search', json=new_search)
-        data = json.loads(res.data)
-        # testing
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(data['success'], True)
-        self.assertIsNotNone(data['questions'])
-        self.assertIsNotNone(data['total_questions'])
+        response = self.client().post('/api/questions/search', json=new_search)
+        print(response.data)
+        self.assertEqual(response.status_code, 200)
 
     def test_failed_search_question(self):
         new_search = {
             'searchTerm': '',
         }
-        res = self.client().post('/api/questions/search', json=new_search)
-        data = json.loads(res.data)
-        #testing
-        self.assertEqual(res.status_code, 404)
-        self.assertEqual(data["success"], False)
-        self.assertEqual(data["message"], "resource not found")
+        response = self.client().post('/api/questions/search', json=new_search)
+        self.assertEqual(response.status_code, 404)
 
     def test_categories(self):
-        res = self.client().get('/api/categories')
-        data = json.loads(res.data)
-        #testing
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(data['success'], True)
-        self.assertTrue(len(data['categories']))
+        response = self.client().get('/api/categories')
+        self.assertEqual(response.status_code, 200)
 
-    def test_invalid_category(self):
-        res = self.client().get('/api/categories/9999')
-        data = json.loads(res.data)
-        #testing
-        self.assertEqual(res.status_code, 404)
-        self.assertEqual(data['success'], False)
-        self.assertEqual(data['message'], 'resource not found')
+    def test_failed_invalid_category(self):
+        response = self.client().get('/api/categories/9999')
+        self.assertEqual(response.status_code, 404)
+
 
     def test_questions_per_category(self):
-        res = self.client().get('/api/category/1/questions')
-        data = json.loads(res.data)
-        #testing
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(data['success'], True)
-        self.assertTrue(len(data['questions']))
-        self.assertTrue(data['total_questions'])
-        self.assertTrue(data['current_category'])
+        response = self.client().get('/api/category/1/questions')
+        self.assertEqual(response.status_code, 200)
 
     def test_failed_questions_per_category(self):
-        res = self.client().get('/api/category/a/questions')
-        data = json.loads(res.data)
-
-        self.assertEqual(res.status_code, 404)
-        self.assertEqual(data["success"], False)
-        self.assertEqual(data["message"], "resource not found")
-
+        response = self.client().get('/api/category/a/questions')
+        self.assertEqual(response.status_code, 404)
 
 
 

@@ -50,24 +50,12 @@ By making notes ahead of time, you will practice the core skill of being able to
 
 
 
-## API Documentation
+### API Documentation and Example Responses
 
-| Endpoint                   | Method | Parameters                         | Behavior                                |
-| -------------------------- | ------ | ---------------------------------- | --------------------------------------- |
-| /api/questions                 | GET    | -                                  | Returns list of questions               |
-| /api/categories                | GET    | -                                  | Returns list of categories              |
-| /api/question/`<id>`          | DEL    | question_id                        | Deletes a question                      |
-| /api/questions                 | POST   | -                                  | Creates a new question                  |
-| /api/category/`<id>`/questions | GET    | category_id                        | List of questions from specified category |
-| /api/quizzes                   | POST   | previous_questions , quiz_category | Display random question based on the choosen category. |
-
-
-
-### Example responses
 
 ------
 
-> **/api/questions**
+> **/api/questions** (GET)
 
 ```json
 {
@@ -79,89 +67,154 @@ By making notes ahead of time, you will practice the core skill of being able to
     "5": "Entertainment", 
     "6": "Sports"
   }, 
-  "current_category": null, 
   "questions": [
     {
+      "answer": "Muhammad Ali", 
+      "category": 4, 
+      "difficulty": 1, 
+      "id": 9, 
+      "question": "What boxer's original name is Cassius Clay?"
+    }, 
+    {
+      "answer": "Apollo 13", 
+      "category": 5, 
+      "difficulty": 4, 
+      "id": 2, 
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+    }, 
+    {
+      "answer": "Tom Cruise", 
+      "category": 5, 
+      "difficulty": 4, 
+      "id": 4, 
+      "question": "What actor did author Anne Rice first denounce, then praise in the role of her beloved Lestat?"
+    }, 
+    {
       "answer": "Edward Scissorhands", 
-      "category": "5", 
+      "category": 5, 
       "difficulty": 3, 
       "id": 6, 
       "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
     }, 
     {
       "answer": "Brazil", 
-      "category": "6", 
+      "category": 6, 
       "difficulty": 3, 
       "id": 10, 
       "question": "Which is the only team to play in every soccer World Cup tournament?"
-    }, 
+    }
+  ], 
+  "success": true, 
+  "total_questions": 24
+}	
+```
+
+------
+
+> **/api/question/6** (DEL)
+
+```json
+{
+  "success": true,
+  "deleted": 6
+}
+```
+
+------
+> **/api/questions** (POST)
+
+```json
+{
+  "success": true,
+  "created": 1
+}
+
+```
+
+------
+> **/api/questions/search** (POST)
+
+```json
+{
+  "questions": [
     {
-      "answer": "Uruguay", 
-      "category": "6", 
-      "difficulty": 4, 
-      "id": 11, 
-      "question": "Which country won the first ever soccer World Cup in 1930?"
-    }, 
+      "answer": "I wan be seniorman",
+      "category": "1",
+      "difficulty": 1,
+      "id": 78,
+      "question": "Wetin you wan be for life?"
+    },
     {
-      "answer": "George Washington Carver", 
-      "category": "4", 
-      "difficulty": 2, 
-      "id": 12, 
-      "question": "Who invented Peanut Butter?"
-    }, 
+      "answer": "I wan be seniorman",
+      "category": "1",
+      "difficulty": 1,
+      "id": 79,
+      "question": "Wetin you wan be for life?"
+    },
+    {
+      "answer": "I be seniorman",
+      "category": "1",
+      "difficulty": 3,
+      "id": 44,
+      "question": "Tell me about yourself?"
+    },
+    {
+      "answer": "I be seniorman",
+      "category": "1",
+      "difficulty": 3,
+      "id": 46,
+      "question": "Tell me about yourself?"
+    },
+    {
+      "answer": "I be seniorman",
+      "category": "1",
+      "difficulty": 3,
+      "id": 48,
+      "question": "Tell me about yourself?"
+    }
+  ],
+  "success": true,
+  "total_questions": 10
+}
+
+```
+------
+
+> **/api/category/3/questions** (GET)
+
+```json
+{
+  "current_category": 3, 
+  "questions": [
     {
       "answer": "Lake Victoria", 
-      "category": "3", 
+      "category": 3, 
       "difficulty": 2, 
       "id": 13, 
       "question": "What is the largest lake in Africa?"
     }, 
     {
       "answer": "The Palace of Versailles", 
-      "category": "3", 
+      "category": 3, 
       "difficulty": 3, 
       "id": 14, 
       "question": "In which royal palace would you find the Hall of Mirrors?"
     }, 
     {
       "answer": "Agra", 
-      "category": "3", 
+      "category": 3, 
       "difficulty": 2, 
       "id": 15, 
       "question": "The Taj Mahal is located in which Indian city?"
-    }, 
-    {
-      "answer": "Escher", 
-      "category": "2", 
-      "difficulty": 1, 
-      "id": 16, 
-      "question": "Which Dutch graphic artist\u2013initials M C was a creator of optical illusions?"
-    }, 
-    {
-      "answer": "Mona Lisa", 
-      "category": "2", 
-      "difficulty": 3, 
-      "id": 17, 
-      "question": "La Giaconda is better known as what?"
-    }, 
-    {
-      "answer": "One", 
-      "category": "2", 
-      "difficulty": 4, 
-      "id": 18, 
-      "question": "How many paintings did Van Gogh sell in his lifetime?"
     }
   ], 
   "success": true, 
-  "total_questions": 43
-}	
-```
-
-
+  "total_questions": 3
+}
 
 ------
 
-> **/api/categories**
+> **/api/categories** (GET)
 
 ```json
 {
@@ -179,11 +232,9 @@ By making notes ahead of time, you will practice the core skill of being able to
 
 
 
-
-
 ------
 
-> **/api/category/6/questions**
+> **/api/category/6/questions** (GET)
 
 ```json
 {
@@ -208,40 +259,6 @@ By making notes ahead of time, you will practice the core skill of being able to
 }
 ```
 
-
-
-
-
-------
-
-> **/api/question/6** (DEL)
-
-```json
-{
-  "deleted_question": 6,
-  "success": true
-}
-```
-
-
-
-
-
-------
-
-> **/api/questions** (POST)
-
-```json
-{
-  "success": true
-}
-
-```
-
-
-
-
-
 ------
 
 > **/api/quizzes** (POST -> Category ALL)
@@ -256,4 +273,16 @@ By making notes ahead of time, you will practice the core skill of being able to
 }
 
 ```
+
+## TESTING
+
+``` 
+dropdb fyuur_test
+createdb fyuur_test
+psql fyuur_test < trivia.psql
+python test_flaskr.py
+
+```
+
+
 
